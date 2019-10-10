@@ -3,13 +3,13 @@ using Activ.GOAP;
 
 public class BakerAI : GameAI<Baker>, Baker.AI{
 
-    int   temperature = 0;
+    int temperature = 0;
     float bake;
 
-    override protected Goal<Baker> Goal()
+    override public Goal<Baker> Goal()
     => new Goal<Baker>( x => x.state == Baker.Cooking.Cooked );
 
-    override protected Baker Model()
+    override public Baker Model()
     => new Baker(this){ temperature=temperature, bake=bake };
 
     public void SetTemperature(int degrees)
@@ -17,5 +17,7 @@ public class BakerAI : GameAI<Baker>, Baker.AI{
 
     public void Bake()
     => bake += temperature/2;
+
+    //public void ApplyEffect(object arg) => Effect(arg);
 
 }
