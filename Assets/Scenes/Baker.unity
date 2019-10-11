@@ -323,11 +323,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1592894246}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05931bc48501a44da88ead68ba00bab9, type: 3}
+  m_Script: {fileID: 11500000, guid: 3e241b87305be4a5e89db2b32403b7de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   verbose: 1
   busy: 0
+  frameBudget: 5
+  bake: 0
 --- !u!65 &1592894248
 BoxCollider:
   m_ObjectHideFlags: 0
