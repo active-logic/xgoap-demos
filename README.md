@@ -11,6 +11,6 @@ Simple non visual project demonstrating Unity integration via `GameAI`.
 - Behavior (added to scene) : [BakerAI.cs](https://github.com/active-logic/xgoap/blob/master/Runtime/Demos/BakerAI.cs)
 - Planning model: [Baker.cs](https://github.com/active-logic/xgoap/blob/master/Runtime/Demos/Baker.cs)
 
-## Sentinel demo (WIP)
+## Sentinel demo
 
 Pathfinding, shooting and opening new paths by moving blocks; see [dev notes](Assets/Sentinel/README.md)
