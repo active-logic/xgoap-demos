@@ -56,8 +56,10 @@ using static UnityEngine.Vector2;
     override public int GetHashCode()
     => (x + y * 1000) * (target==null? 2 : 1);
 
-    bool Move(Vector2 dir)
-    { position += dir; return !ground.IsObstructed(position); }
+    bool Move(Vector2 dir){
+        position += dir;
+        return !ground.IsObstructed(position);
+    }
 
     [Serializable] public class Target{
 

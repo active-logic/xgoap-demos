@@ -93,13 +93,19 @@ Without a heuristic the path-finding 'phase' would be very expensive.
 
 We also need to update the model's `Equals()` and, ideally also `GetHashCode()`; adding model state without updating these is a source of errors.
 
-## A note about methodology
+## Methodology note
 
-With the above, errors started appearing when introducing the latest action.
-A little interactive feedback does not hurt; with this in mind I added an editor to help visualize planning behavior.
+Adding the *shoot* action didn't go as smoothly as I expected. To figure things out, I wrote a few tests.
 
-Having said that, how the model was fixed is by writing and running tests. The advantage of this method is that we can make sure fixes stay 'in' as development progresses.
+More interactive feedback is on the plan for XGOAP. With that in mind, tests are better than interactive feedback (such as viewing generated plans in realtime, or the status of the solver):
+
+- Interactive feedback can help you locate issues quickly.
+- Tests do not just prove that an agent can satisfy a given goal; running tests regularly ensures that adding new features does not break old stuff.
 
 ## Pathfinding II
 
-Now that the shooting action is done, let's get back to path finding.
+Now that shooting's working, let's go back to path-finding.
+For this, the following changes were made:
+
+- `Ground` generates a terrain using `GroundModel`.
+- `SentinelModel` now includes the ground model to enable detecting obstructions.

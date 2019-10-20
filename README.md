@@ -1,12 +1,19 @@
 # XGOAP Demos
 
-Currently this repository only contains a trivial application demonstrating that a `GameAI` subclass can be added to a Unity object, and will perform planning and execution as intended.
+Demos for [Beyond GOAP](https://github.com/active-logic/xgoap), a goal oriented action planner for Unity3D and .NET core.
 
-Since demo files are also used in functional testing, sources are in the main XGOAP repo:
+Demos run in Unity 2019 (maybe 2018).
+
+## Baker demo
+
+Simple non visual integration showing the use of `GameAI` for planning and driving plan execution.
+Since this is also used in functional testing, sources are in the main XGOAP repo:
 
 - Behavior (added to scene) : [BakerAI.cs](https://github.com/active-logic/xgoap/blob/master/Runtime/Demos/BakerAI.cs)
 - Planning model: [Baker.cs](https://github.com/active-logic/xgoap/blob/master/Runtime/Demos/Baker.cs)
 
-## Requests open
+## Sentinel demo (WIP)
 
-I am currently picking a topic for a more visual XGOAP demonstration. Open to suggestions.
+Pathfinding, shooting and solving spatial puzzles such as opening a path by moving blocks.
+
+See [tutorial/info](Assets/Sentinel/README.md)
