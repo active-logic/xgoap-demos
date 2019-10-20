@@ -134,3 +134,18 @@ hold?.SetParent(null);
 ### Add props to the map
 
 This is a minor update to the `Ground` and `GroundModel`. Once we have added props at key locations on the map, the bot can no longer get in range; the solver stalls after exploring all possibilities.
+
+### Modeling the 'pull' action.
+
+Since pulling works 'backwards' relative to the agent's facing direction, we need to keep their orientation up to date; we won't add a 'turn' action yet - instead, we assume rotation and translation are linked.
+
+There are two conditions to move a prop:
+- The agent must be facing the prop
+- The tile behind an agent should not be obstructed
+
+`SentinelModel.Pull` implements the planning action; the ground model is updated accordingly:
+- At the prop location, set map ID to 'ground'
+- At the sentinel location, set map ID to 'prop'
+- Move the sentinal one unit back
+
+The ground model needs a similar update when the game action is applied.

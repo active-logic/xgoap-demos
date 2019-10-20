@@ -1,15 +1,19 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Ground : MonoBehaviour{
 
     public GroundModel model;
     public GameObject propPrefab;
+    public List<GameObject> props;
+    public bool useProps = true;
 
     void Awake(){
         model = new GroundModel();
         int n = 0;
         for(int x = 0; x < 11; x++){
             for(int z = 0; z < 11; z++){
+                if(!useProps && model.map[n]==2) model.map[n] = 0;
                 switch(model.map[n++]){
                     case 0: AddBlock(x, z); break;
                     case 2: AddBlock(x, z); AddProp(x, z); break;
@@ -30,6 +34,23 @@ public class Ground : MonoBehaviour{
         var prop = Instantiate(propPrefab).transform;
         prop.position =
             new Vector3(x - 5, 0.5f, z - 5);
+        props.Add(prop.gameObject);
+    }
+
+    public GameObject WillMoveProp(Transform bot){
+        var B = bot.position;
+        var P = bot.position + bot.forward;
+        foreach(var k in props){
+            var d = Vector3.Distance(P, k.transform.position);
+            if(d < 0.1){
+                var here = new Vector2(B.x, B.z);
+                var ahead = new Vector2(P.x, P.z);
+                model.Set(ahead, 0);
+                model.Set(here, 2);
+                return k;
+            }
+        }
+        return null;
     }
 
 }

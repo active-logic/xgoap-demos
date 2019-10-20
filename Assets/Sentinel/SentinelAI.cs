@@ -7,7 +7,7 @@ public class SentinelAI : GameAI<SentinelModel>{
 
     const float LARGE_VALUE = 1e6f;
     public Vector2 target;
-    GroundModel ground;
+    Ground ground;
 
     Sentinel actor => GetComponent<Sentinel>();
 
@@ -17,7 +17,7 @@ public class SentinelAI : GameAI<SentinelModel>{
         return t == this ? null : t.gameObject;
     }}
 
-    void Start() => ground = FindObjectOfType<Ground>().model;
+    void Start() => ground = FindObjectOfType<Ground>();
 
     override public void Update()
     { busy = actor.moving; base.Update(); }
@@ -27,6 +27,12 @@ public class SentinelAI : GameAI<SentinelModel>{
     public void MoveForward() => actor.Move(forward);
     public void MoveBack()    => actor.Move(back);
     public void Shoot()       => actor.Shoot(nearestTarget);
+    public void Pull(){
+        var w = ground.WillMoveProp(transform);
+        print("Ahead "+w);
+        actor.Pull(w);
+        //throw new System.Exception("Not implemented");
+    }
 
     override public Goal<SentinelModel> Goal()
     => new Goal<SentinelModel>(
@@ -41,7 +47,7 @@ public class SentinelAI : GameAI<SentinelModel>{
         return new SentinelModel(
             transform,
             new SentinelModel.Target((int)p.x, (int)p.z),
-            ground);
+            ground.model);
     }
 
     Goal<SentinelModel> Reach()

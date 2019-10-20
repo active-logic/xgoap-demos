@@ -12,8 +12,10 @@ public class Sentinel : MonoBehaviour{
 
     public bool moving => target.HasValue;
 
-    public void Move(Vector3 dir)
-    => target = transform.position + dir;
+    public void Move(Vector3 dir){
+        transform.forward = dir;
+        target = transform.position + dir;
+    }
 
     public void Shoot(GameObject target) => Destroy(target);
 
