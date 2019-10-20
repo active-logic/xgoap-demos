@@ -8,6 +8,7 @@ public class Sentinel : MonoBehaviour{
 
     public float speed = 0.1f;
     Vector3? target;
+    Transform hold;
 
     public bool moving => target.HasValue;
 
@@ -15,6 +16,11 @@ public class Sentinel : MonoBehaviour{
     => target = transform.position + dir;
 
     public void Shoot(GameObject target) => Destroy(target);
+
+    public void Pull(GameObject prop){
+        target = transform.position - transform.forward;
+        (hold = prop.transform).SetParent(transform);
+    }
 
     void Update(){ if(target.HasValue) UpdatePosition(); }
 
@@ -26,6 +32,7 @@ public class Sentinel : MonoBehaviour{
         }else{
             transform.position = target.Value;
             target = null;
+            hold?.SetParent(null);
         }
     }
 

@@ -109,3 +109,28 @@ For this, the following changes were made:
 
 - `Ground` generates a terrain using `GroundModel`.
 - `SentinelModel` now includes the ground model to enable detecting obstructions.
+
+## 4. Moving blocks
+
+In this part we're going to add movable blocks, along with an action allowing a bot to pull a block.
+
+### Game action
+
+```cs
+public void Pull(GameObject prop){
+    target = transform.position - transform.forward;
+    (hold = prop.transform).SetParent(transform);
+}
+```
+
+Here, a prop is parented to the bot, then the bot moves one unit backward. We assume that the agent are facing the prop (the planning model is going to enforce this assumption).
+
+Once the target is reached, the hold is released (see `UpdatePosition`):
+
+```cs
+hold?.SetParent(null);
+```
+
+### Add props to the map
+
+This is a minor update to the `Ground` and `GroundModel`. Once we have added props at key locations on the map, the bot can no longer get in range; the solver stalls after exploring all possibilities.
