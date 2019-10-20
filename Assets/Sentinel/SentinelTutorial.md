@@ -48,4 +48,58 @@ I added a trail renderer; cheap trick but lets us visualize the resulting path.
 
 ## Target practice
 
-A this point path-finding doesn't really shine since obstacles are not accounted for. In practice though, you'd probably delegate path-finding to a subsystem. With this in mind we'll implement shooting a dummy as our next goal.
+A this point path-finding doesn't really shine since obstacles are not accounted for. We'll implement shooting a dummy as our next goal, and get back to path-finding later.
+
+We will:
+- Add an action to the system
+- Modify the goal
+
+First let's add a 'shoot' action to the controller:
+
+```cs
+public void Shoot(GameObject target) => Destroy(target);
+```
+
+Next, add the shoot action to the AI:
+
+```cs
+public void Shoot() => actor.Shoot(nearestTarget);
+```
+
+This just retrieves the closest sentinel and shoots at it.
+
+Let's add the model action; in the model we assume that the shoot action is range-limited.
+
+```cs
+public Cost Shoot(){
+    if(target.Dist(x, y) > range) return false;
+    return (target = null, 1);
+}
+```
+
+This is assuming a `Target` class which holds the target coordinates.
+
+Now we update the goal - we're no longer trying to reach any specific position; instead we would like the agent to shoot the nearest target.
+
+```cs
+override public Goal<SentinelModel> Goal()
+=> new Goal<SentinelModel>(
+    m => m.target == null,
+    m => m.target?.Dist(m.x, m.y) ?? 0
+);
+```
+
+Without a heuristic the path-finding 'phase' would be very expensive.
+
+We also need to update the model's `Equals()` and, ideally also `GetHashCode()`; adding model state without updating these is a source of errors.
+
+## A note about methodology
+
+With the above, errors started appearing when introducing the latest action.
+A little interactive feedback does not hurt; with this in mind I added an editor to help visualize planning behavior.
+
+Having said that, how the model was fixed is by writing and running tests. The advantage of this method is that we can make sure fixes stay 'in' as development progresses.
+
+## Pathfinding II
+
+Now that the shooting action is done, let's get back to path finding.

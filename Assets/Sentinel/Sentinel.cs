@@ -9,8 +9,12 @@ public class Sentinel : MonoBehaviour{
     public float speed = 0.1f;
     Vector3? target;
 
+    public bool moving => target.HasValue;
+
     public void Move(Vector3 dir)
     => target = transform.position + dir;
+
+    public void Shoot(GameObject target) => Destroy(target);
 
     void Update(){ if(target.HasValue) UpdatePosition(); }
 
