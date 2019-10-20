@@ -12,7 +12,7 @@ In general, a typical GOAP implementation will look like this:
 
 In Unity3D, both the controller and the AI derive from `MonoBehaviour` - so you can add them to a game object.
 
-## Basic Navigation
+## 1. Basic Navigation
 
 ### The controller
 
@@ -46,7 +46,7 @@ We add the `Sentinel` and `SentinelAI` components to a placeholder (a cube primi
 
 I added a trail renderer; cheap trick but lets us visualize the resulting path.
 
-## Target practice
+## 2. Target practice
 
 A this point path-finding doesn't really shine since obstacles are not accounted for. We'll implement shooting a dummy as our next goal, and get back to path-finding later.
 
@@ -93,7 +93,7 @@ Without a heuristic the path-finding 'phase' would be very expensive.
 
 We also need to update the model's `Equals()` and, ideally also `GetHashCode()`; adding model state without updating these is a source of errors.
 
-## Methodology note
+### Methodology note
 
 Adding the *shoot* action didn't go as smoothly as I expected. To figure things out, I wrote a few tests.
 
@@ -102,7 +102,7 @@ More interactive feedback is on the plan for XGOAP. With that in mind, tests are
 - Interactive feedback can help you locate issues quickly.
 - Tests do not just prove that an agent can satisfy a given goal; running tests regularly ensures that adding new features does not break old stuff.
 
-## Pathfinding II
+## 3. Pathfinding II
 
 Now that shooting's working, let's go back to path-finding.
 For this, the following changes were made:
