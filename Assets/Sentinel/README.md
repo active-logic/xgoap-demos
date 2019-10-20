@@ -149,3 +149,7 @@ There are two conditions to move a prop:
 - Move the sentinal one unit back
 
 The ground model needs a similar update when the game action is applied.
+
+# 5. Warmongering!
+
+Now that interesting behaviors are in place, it would be neat to convert the practice dummy into another sentinel, so we can pit sentinels against one another. Fortunately this is done in one click. Enabling `SentinelAI` on the practice dummy is all it takes.
