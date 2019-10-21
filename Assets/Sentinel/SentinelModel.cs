@@ -3,7 +3,7 @@ using UnityEngine;
 using Activ.GOAP;
 using static UnityEngine.Vector2;
 
-[Serializable] public class SentinelModel : Agent{
+[Serializable] public class SentinelModel : Agent, Clonable{
 
     const int range = 3;
     public int x, y;
@@ -11,6 +11,13 @@ using static UnityEngine.Vector2;
     public Target target;
     // The ground model is static so don't serialize it
     GroundModel ground;
+
+    public object Clone() => new SentinelModel(){
+        x = x, y = y,
+        dirX = dirX, dirY = dirY,
+        target = target,
+        ground = (GroundModel)ground.Clone()
+    };
 
     public Vector2 position{
         get => new Vector2(x, y);
@@ -34,6 +41,8 @@ using static UnityEngine.Vector2;
         this.target = target;
     }
 
+    SentinelModel(){}
+
     public Func<Cost>[] actions => new Func<Cost>[]
     { MoveLeft, MoveBack, MoveRight, MoveForward, Shoot, Pull };
 
@@ -55,8 +64,8 @@ using static UnityEngine.Vector2;
         var behind = here - direction;
         if(!ground.IsProp(ahead) || ground.IsObstructed(behind))
             return false;
-        ground.Set(ahead, 0);
-        ground.Set(here, 2);
+        //ebug.Log($"Move prop {ahead} => {here}");
+        ground.MoveProp(ahead, here);
         position = behind;
         return 1;
     }
@@ -73,7 +82,7 @@ using static UnityEngine.Vector2;
             && this.dirX == that.dirX
             && this.dirY == that.dirY
             && this.target.Equals(that.target)
-            && this.ground.Equals(that.ground);
+            && this.ground.IsEqual(that.ground);
     }
 
     override public int GetHashCode()
