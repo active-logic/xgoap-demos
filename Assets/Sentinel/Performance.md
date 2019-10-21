@@ -1,3 +1,5 @@
+*Dev notes; pending review*
+
 # Performance and optimization
 
 ## Speeding up ground model comparisons
@@ -13,14 +15,15 @@ Speeding up the clone method relegated cloning to ~ 1% of processing overheads.
 
 ## Back to hashing and equality
 
-At this point the ground model comparison is 50% of planning cost, courtesy `SequenceEqual`. Can this be improved? Getting to the gritty details, we get this to 12%:
+At this point the ground model comparison is 50% of planning cost, courtesy `SequenceEqual`. Can this be improved? Getting to the gritty details, we eventually get hashing overheads to ~12% - less than the actual work of retrieving (15%) and applying actions (17%); notes:
+
 - Use arrays, not lists.
 - If we know the type, we don't need a generic equality comparer
 - Avoid pattern matching (may trigger GC)
 
-Also tweaked hashcodes.
+Tweaked hashcodes too.
 
-## The ghost in the closet
+## A ghost in the closet
 
 We could continue with petty optimizations and get linear improvements but most planners have a common problem: the more variables in your model, the bigger the state space.
 

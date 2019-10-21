@@ -1,4 +1,6 @@
-# Sentinel demo - dev notes
+*Dev notes; pending review*
+
+# Sentinel demo
 
 Let's create a bot which can navigate a terrain and shoot down other bots.
 
