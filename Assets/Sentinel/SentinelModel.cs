@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using Activ.GOAP;
 using static UnityEngine.Vector2;
+using static UnityEngine.Mathf;
 
 [Serializable] public class SentinelModel : Agent, Clonable{
 
@@ -20,21 +21,16 @@ using static UnityEngine.Vector2;
 
     public Vector2 position{
         get => new Vector2(x, y);
-        set{ x = (int)value.x; y = (int)value.y; }
+        set{ x = RoundToInt(value.x); y = RoundToInt(value.y); }
     }
-
-    //public Vector2 direction{
-    //    get => new Vector2(dirX, dirY);
-    //    set{ dirX = (int)value.x; dirY = (int)value.y; }
-    //}
 
     public SentinelModel(Transform t, Target target,
                                       GroundModel ground){
         position = (t != null)
-            ? new Vector2((int)t.position.x, (int)t.position.z)
+            ? new Vector2(t.position.x, t.position.z)
             : new Vector2(0, 0);
         direction = (t != null)
-            ? new Vector2i((int)t.forward.x, (int)t.forward.z)
+            ? new Vector2i(t.forward.x, t.forward.z)
             : new Vector2i(0, 0);
         this.ground = ground;
         this.target = target;
@@ -63,7 +59,6 @@ using static UnityEngine.Vector2;
         var behind = here - (Vector2)direction;
         if(!ground.IsProp(ahead) || ground.IsObstructed(behind))
             return false;
-        //ebug.Log($"Move prop {ahead} => {here}");
         ground.MoveProp(ahead, here);
         position = behind;
         return 1;
@@ -84,18 +79,35 @@ using static UnityEngine.Vector2;
     }
 
     override public int GetHashCode()
-    //=> dirX + dirY * 1000;
-    => direction.GetHashCode()*31*31 + x*31 + y; //+ (target==null? 16 : 0);
+    => direction.GetHashCode()*31*31 + x*31 + y;
 
     bool Move(Vector2 dir){
-        position += dir;
-        direction = (Vector2i)dir;
-        return !ground.IsObstructed(position);
+        var p = position + dir;
+        if(ground.IsObstructed(p)) return false;
+        if(p.x < -5.5f){
+            Debug.LogError($"Out of boord coord not obst. {p}");
+        }
+        position = p;
+        direction = ground.IsPropNearby(position)
+            ? (Vector2i)dir : new Vector2i(0, 0);
+        return true;
     }
+
+    public void Print(object x) => UnityEngine.Debug.Log(x);
+
+    override public string ToString()
+    => $"M[{x}, {y} to {direction}]";
+
+    // -------------------------------------------------------------
 
     [Serializable] public class Target{
 
         public int x, y;
+
+        public Target(float x, float y){
+            this.x = RoundToInt(x);
+            this.y = RoundToInt(y);
+        }
 
         public Target(int x, int y){ this.x = x; this.y = y; }
 
@@ -112,14 +124,6 @@ using static UnityEngine.Vector2;
 
         override public int GetHashCode() => x*31 + y;
 
-    }
-
-    public void Print(object x){
-        UnityEngine.Debug.Log(x);
-    }
-
-    override public string ToString(){
-        return $"M[{x}, {y} to {direction}]";
     }
 
 }

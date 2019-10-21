@@ -44,11 +44,24 @@ public class GroundModel : Clonable{
 
     public bool IsObstructed(Vector2 q){
         var w = q + Vector2.one * 5;
-        int x = (int)w.x, y = (int)w.y;
+        int x = Mathf.RoundToInt(w.x),
+            y = Mathf.RoundToInt(w.y);
+        //
+        var d = Vector2.Distance(w, new Vector2(x, y));
+        if(d > 0.1) Debug.LogError("bad conversion");
+        //
         if(x < 0 || x > 10) return true;
         if(y < 0 || y > 10) return true;
+        if(q.x < -5.5)Debug.LogError("This should be obstructed: " + x+", "+y);
         return (this[x, y] != 0) || IsProp(q);
-;
+
+    }
+
+    public bool IsPropNearby(Vector2 q){
+        return IsProp(q + Vector2.right)
+            || IsProp(q + Vector2.left)
+            || IsProp(q + Vector2.up)
+            || IsProp(q + Vector2.down);
     }
 
     public bool IsProp(Vector2 atPos){
@@ -58,12 +71,16 @@ public class GroundModel : Clonable{
 
     public void MoveProp(Vector2 src, Vector2 dst){
         for(int i = 0; i < props.Length; i++){
-            if(props[i] == src){
+            var d = Vector2.Distance((Vector2)props[i], src);
+            if(d < 0.1f){
                 props[i] = (Vector2i)dst;
                 return;
             }
         }
-        throw new System.Exception("Could not move prop");
+        for(int i = 0; i < props.Length; i++){
+            Debug.Log($"Prop {i} - {props[i]}");
+        }
+        throw new System.Exception($"Could not move prop: {src}, {(Vector2i)src}");
     }
 
     override public int GetHashCode()

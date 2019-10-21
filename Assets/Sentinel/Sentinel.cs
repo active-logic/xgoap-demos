@@ -13,6 +13,8 @@ public class Sentinel : MonoBehaviour{
     public bool moving => target.HasValue;
 
     public void Move(Vector3 dir){
+        var P = transform.position + dir;
+        if(P.x < -5.5f) Debug.LogError("Instructed to move out of bounds");
         transform.forward = dir;
         target = transform.position + dir;
     }

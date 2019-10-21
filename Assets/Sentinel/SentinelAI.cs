@@ -13,7 +13,7 @@ public class SentinelAI : GameAI<SentinelModel>{
 
     GameObject nearestTarget{ get{
         var t = FindObjectsOfType<SentinelAI>()
-            .Aggregate((x, y) => Dist(x) < Dist(y) ? x : y );
+                .Aggregate((x, y) => Dist(x) < Dist(y) ? x : y );
         return t == this ? null : t.gameObject;
     }}
 
@@ -45,7 +45,7 @@ public class SentinelAI : GameAI<SentinelModel>{
         var p = t.transform.position;
         return new SentinelModel(
             transform,
-            new SentinelModel.Target((int)p.x, (int)p.z),
+            new SentinelModel.Target(p.x, p.z),
             ground.model);
     }
 
