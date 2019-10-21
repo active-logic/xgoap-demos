@@ -6,10 +6,7 @@ public class TestMoveBlock : TestBase{
 
     GroundModel ground;
 
-    [SetUp] public void Setup(){
-        ground = new GroundModel();
-        //ground.Clear();
-    }
+    [SetUp] public void Setup() => ground = new GroundModel();
 
     [Test] public void MoveBlock(){
         var x =
@@ -30,7 +27,6 @@ public class TestMoveBlock : TestBase{
             new SentinelModel((Transform)null,
                               new SentinelModel.Target(-3, -2),
                               ground);
-        //x.directional = false;
         o( x.target != null );
         var p = new Solver<SentinelModel>();
         p.maxIter = 512;
@@ -40,7 +36,7 @@ public class TestMoveBlock : TestBase{
         print(p.state.ToString());
         print($"Iter: {p.I}, max fringe: {p.fxMaxNodes}");
         var path = s.Path();
-        o( path.Length, 24 );
+        o( path.Length, 25 );
         foreach(var n in path) print(n.ToString());
     }
 

@@ -27,11 +27,10 @@ public class SentinelAI : GameAI<SentinelModel>{
     public void MoveForward() => actor.Move(forward);
     public void MoveBack()    => actor.Move(back);
     public void Shoot()       => actor.Shoot(nearestTarget);
+
     public void Pull(){
         var w = ground.WillMoveProp(transform);
-        print("Ahead "+w);
         actor.Pull(w);
-        //throw new System.Exception("Not implemented");
     }
 
     override public Goal<SentinelModel> Goal()

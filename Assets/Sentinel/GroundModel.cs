@@ -5,24 +5,17 @@ using UnityEngine;
 [Serializable]
 public class GroundModel{
 
-    public int[] map = new int[]{
-        1,1,0,0,0, 0, 2,0,0,0,0,
-        0,0,0,1,1, 1, 1,0,0,0,0,
-        0,0,0,1,0, 1, 1,1,1,0,1,
-        1,0,0,0,0, 1, 1,1,0,1,1,
-        1,2,1,1,1, 1, 1,1,1,0,0,
-        //
-        2,0,1,1,1, 0, 1,0,0,0,0,
-        //
-        0,0,1,0,0, 0, 1,0,0,0,0,
-        0,0,2,0,0, 0, 1,0,0,0,0,
-        0,0,1,1,1, 1, 1,0,0,0,0,
-        0,0,1,0,0, 0, 0,0,0,0,0,
-        0,0,1,0,0, 0, 0,0,0,0,0,
-    };
+    int[] map;
+    
+    public GroundModel(){
+        map = DefaultMap.data;
+    }
 
-    public void Clear()
-    { for(int i = 0; i < map.Length; i++) map[i] = 0; }
+    public int this[int i] => map[i];
+
+    public void Clear() => map = new int[map.Length];
+
+    public void ClearProps() => map.Replace(2, with: 0);
 
     public bool IsObstructed(Vector2 p){
         p += Vector2.one * 5;
@@ -47,6 +40,9 @@ public class GroundModel{
         int x = (int)p.x, y = (int)p.y;
         map[x * 11 + y] = val;
     }
+
+    override public int GetHashCode()
+    => map.Aggregate(0, (x, y) => x + y);
 
     override public bool Equals(object other){
         var that = other as GroundModel;

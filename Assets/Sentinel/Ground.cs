@@ -11,10 +11,10 @@ public class Ground : MonoBehaviour{
     void Awake(){
         model = new GroundModel();
         int n = 0;
+        if(!useProps) model.ClearProps();
         for(int x = 0; x < 11; x++){
             for(int z = 0; z < 11; z++){
-                if(!useProps && model.map[n]==2) model.map[n] = 0;
-                switch(model.map[n++]){
+                switch(model[n++]){
                     case 0: AddBlock(x, z); break;
                     case 2: AddBlock(x, z); AddProp(x, z); break;
                 }
