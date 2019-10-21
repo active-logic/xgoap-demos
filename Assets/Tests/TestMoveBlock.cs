@@ -16,7 +16,7 @@ public class TestMoveBlock : TestBase{
         var P = new Vector2(2, -2);
         var B = new Vector2(2, -3);
         x.position = P;
-        x.direction = new Vector2(0, -1);
+        x.direction = new Vector2i(0, -1);
         o( ground.IsObstructed(B));
         x.Pull();
         o( !ground.IsObstructed(B) );

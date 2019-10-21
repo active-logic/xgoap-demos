@@ -11,6 +11,11 @@ using UnityEngine;
     public static explicit operator Vector2i(Vector2 v)
     => new Vector2i((int)v.x, (int)v.y);
 
+    public static explicit operator Vector2(Vector2i v)
+    => new Vector2((int)v.x, (int)v.y);
+
+    public bool Eq(Vector2i that) => x == that.x && y == that.y;
+
     public bool UnEq(Vector2i that) => x != that.x || y != that.y;
 
     public static bool operator == (Vector2i self, object that){

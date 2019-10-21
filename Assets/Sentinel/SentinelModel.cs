@@ -7,14 +7,13 @@ using static UnityEngine.Vector2;
 
     const int range = 3;
     public int x, y;
-    public int dirX, dirY;
+    public Vector2i direction;
     public Target target;
     // The ground model is static so don't serialize it
     GroundModel ground;
 
     public object Clone() => new SentinelModel(){
-        x = x, y = y,
-        dirX = dirX, dirY = dirY,
+        x = x, y = y, direction = direction,
         target = target,
         ground = (GroundModel)ground.Clone()
     };
@@ -24,10 +23,10 @@ using static UnityEngine.Vector2;
         set{ x = (int)value.x; y = (int)value.y; }
     }
 
-    public Vector2 direction{
-        get => new Vector2(dirX, dirY);
-        set{ dirX = (int)value.x; dirY = (int)value.y; }
-    }
+    //public Vector2 direction{
+    //    get => new Vector2(dirX, dirY);
+    //    set{ dirX = (int)value.x; dirY = (int)value.y; }
+    //}
 
     public SentinelModel(Transform t, Target target,
                                       GroundModel ground){
@@ -35,8 +34,8 @@ using static UnityEngine.Vector2;
             ? new Vector2((int)t.position.x, (int)t.position.z)
             : new Vector2(0, 0);
         direction = (t != null)
-            ? new Vector2((int)t.forward.x, (int)t.forward.z)
-            : new Vector2(0, 0);
+            ? new Vector2i((int)t.forward.x, (int)t.forward.z)
+            : new Vector2i(0, 0);
         this.ground = ground;
         this.target = target;
     }
@@ -60,8 +59,8 @@ using static UnityEngine.Vector2;
 
     public Cost Pull(){
         var here   = position;
-        var ahead  = here + direction;
-        var behind = here - direction;
+        var ahead  = here + (Vector2)direction;
+        var behind = here - (Vector2)direction;
         if(!ground.IsProp(ahead) || ground.IsObstructed(behind))
             return false;
         //ebug.Log($"Move prop {ahead} => {here}");
@@ -81,17 +80,16 @@ using static UnityEngine.Vector2;
             && this.target.Equals(that.target)
             && this.x == that.x
             && this.y == that.y
-            && this.dirX == that.dirX
-            && this.dirY == that.dirY;
+            && this.direction.Eq(that.direction);
     }
 
     override public int GetHashCode()
     //=> dirX + dirY * 1000;
-    => dirX*31*31*31 + dirY*31*31 + x*31 + y; //+ (target==null? 16 : 0);
+    => direction.GetHashCode()*31*31 + x*31 + y; //+ (target==null? 16 : 0);
 
     bool Move(Vector2 dir){
         position += dir;
-        direction = dir;
+        direction = (Vector2i)dir;
         return !ground.IsObstructed(position);
     }
 
@@ -121,7 +119,7 @@ using static UnityEngine.Vector2;
     }
 
     override public string ToString(){
-        return $"M[{x}, {y} to {dirX}, {dirY}]";
+        return $"M[{x}, {y} to {direction}]";
     }
 
 }
