@@ -13,6 +13,8 @@ using static UnityEngine.Mathf;
     // The ground model is static so don't serialize it
     GroundModel ground;
 
+    Func<Cost>[] _actions;
+
     public object Clone() => new SentinelModel(){
         x = x, y = y, direction = direction,
         target = target,
@@ -25,7 +27,7 @@ using static UnityEngine.Mathf;
     }
 
     public SentinelModel(Transform t, Target target,
-                                      GroundModel ground){
+                                      GroundModel ground) : this(){
         position = (t != null)
             ? new Vector2(t.position.x, t.position.z)
             : new Vector2(0, 0);
@@ -36,10 +38,12 @@ using static UnityEngine.Mathf;
         this.target = target;
     }
 
-    SentinelModel(){}
+    SentinelModel(){
+        _actions = new Func<Cost>[]
+        { MoveLeft, MoveBack, MoveRight, MoveForward, Shoot, Pull };
+    }
 
-    public Func<Cost>[] actions => new Func<Cost>[]
-    { MoveLeft, MoveBack, MoveRight, MoveForward, Shoot, Pull };
+    public Func<Cost>[] actions => _actions;
 
     public Cost MoveLeft()
     { if(Move(left))  return 1; else return false; }

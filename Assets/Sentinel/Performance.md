@@ -15,7 +15,7 @@ Speeding up the clone method relegated cloning to ~ 1% of processing overheads.
 
 ## Back to hashing and equality
 
-At this point the ground model comparison is 50% of planning cost, courtesy `SequenceEqual`. Can this be improved? Getting to the gritty details, we eventually get hashing overheads to ~12% - less than the actual work of retrieving (15%) and applying actions (17%); notes:
+At this point the ground model comparison is 50% of planning cost, courtesy `SequenceEqual`. Can this be improved?
 
 - Use arrays, not lists.
 - If we know the type, we don't need a generic equality comparer
