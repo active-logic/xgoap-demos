@@ -23,4 +23,14 @@ HashSet.Add = 35%
 SentinelModel.Equals = 18%
 GroundModel.Equals = 7%
 The number of calls to Equals though is quite impressive - 40k, for 90 calls to HashSet.Add!
-Bad hashcode?
+Bad hashcode? Maybe. Trying to fix the hashcode seems to cut these equals calls by 50%
+
+## The ghost in the closet
+
+We could continue with petty optimizations and get linear improvements. But we have another problem with this search - the number of states. The more you have variables in your model, the bigger the search space.
+
+In this case we had to introduce the agent's orientation as a variable. Though represented as a vector this encodes 4 states. So we're making our search space 4 times bigger. But for what?
+
+We only care about orientation when there's a block to pull. In most cases, then, orientation could be ignored. Let's try.
+
+ 

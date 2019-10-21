@@ -77,17 +77,17 @@ using static UnityEngine.Vector2;
 
     override public bool Equals(object other){
         var that = other as SentinelModel;
-        return this.x == that.x
+        return this.ground.IsEqual(that.ground)
+            && this.target.Equals(that.target)
+            && this.x == that.x
             && this.y == that.y
             && this.dirX == that.dirX
-            && this.dirY == that.dirY
-            && this.target.Equals(that.target)
-            && this.ground.IsEqual(that.ground);
+            && this.dirY == that.dirY;
     }
 
     override public int GetHashCode()
     //=> dirX + dirY * 1000;
-    => dirX + dirY + x*400 + y*800 + (target==null? 16 : 0);
+    => dirX*31*31*31 + dirY*31*31 + x*31 + y; //+ (target==null? 16 : 0);
 
     bool Move(Vector2 dir){
         position += dir;
@@ -107,11 +107,12 @@ using static UnityEngine.Vector2;
         }
 
         override public bool Equals(object other){
+            if(other == null) return false;
             var that = other as Target;
             return this.x == that.x && this.y == that.y;
         }
 
-        override public int GetHashCode() => x*100 + y;
+        override public int GetHashCode() => x*31 + y;
 
     }
 
