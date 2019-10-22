@@ -2,30 +2,15 @@ using UnityEngine;
 using NUnit.Framework;
 using Activ.GOAP;
 
-public class TestMoveBlockAndPerf : TestBase{
+public class TestPerf : TestBase{
 
     GroundModel ground;
 
     [SetUp] public void Setup() => ground = new GroundModel();
 
-    [Test] public void MoveBlock(){
-        var x =
-            new SentinelModel((Transform)null,
-                              new SentinelModel.Target(3, 0),
-                              ground);
-        var P = new Vector2(2, -2);
-        var B = new Vector2(2, -3);
-        x.position = P;
-        x.direction = new Vector2i(0, -1);
-        o( ground.IsObstructed(B));
-        x.Pull();
-        o( !ground.IsObstructed(B) );
-    }
-
-    [Test] public void PerfTest([Values(true, false)]bool trimDir){
+    [Test] public void Test_x_10(){
         var z = 0;
         for(int i=0;i<10;i++){
-        SentinelModel.dedupOrientation = trimDir;
         // -4, 2  Puts the sentinel top-right
         // -3, -2 Is on left side, faster
         var x =

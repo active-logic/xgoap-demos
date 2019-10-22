@@ -6,17 +6,17 @@ using static UnityEngine.Mathf;
 
 [Serializable] public class SentinelModel : Agent, Clonable{
 
-    public static bool dedupOrientation = true;
     const int range = 3;
     public int x, y;
-    public Vector2i direction;
     public Target target;
     GroundModel ground;
+    int propIndex = -1;  // index of prop that can be pulled, or -1
 
     Func<Cost>[] _actions;
 
     public object Clone() => new SentinelModel(){
-        x = x, y = y, direction = direction,
+        x = x, y = y,
+        propIndex = propIndex,
         target = target,
         ground = (GroundModel)ground.Clone()
     };
@@ -31,9 +31,12 @@ using static UnityEngine.Mathf;
         position = (t != null)
             ? new Vector2(t.position.x, t.position.z)
             : new Vector2(0, 0);
-        direction = (t != null)
-            ? new Vector2i(t.forward.x, t.forward.z)
-            : new Vector2i(0, 0);
+        //
+        var dir = (t != null)
+            ? new Vector2(t.forward.x, t.forward.z)
+            : new Vector2(0, 0);
+        propIndex = ground.PullablePropIndex(position, dir);
+        //
         this.ground = ground;
         this.target = target;
     }
@@ -58,13 +61,10 @@ using static UnityEngine.Mathf;
     { if(Move(up))    return 1; else return false; }
 
     public Cost Pull(){
-        var here   = position;
-        var ahead  = here + (Vector2)direction;
-        var behind = here - (Vector2)direction;
-        if(!ground.IsProp(ahead) || ground.IsObstructed(behind))
-            return false;
-        ground.MoveProp(ahead, here);
-        position = behind;
+        if(propIndex == -1) return false;
+        var u = ground.PullProp(propIndex, position);
+        position += u;
+        if(ground.IsObstructed(position + u)) propIndex = -1;
         return 1;
     }
 
@@ -75,33 +75,31 @@ using static UnityEngine.Mathf;
 
     override public bool Equals(object other){
         var that = other as SentinelModel;
+        if(that == null) Print("Why is that null?");
+        //if(that.ground == null) Print("Why is that ground null?");
+        //if(that.target == null) Print("Why is that target null?");
         return this.ground.IsEqual(that.ground)
-            && this.target.Equals(that.target)
+            // by ref because target itself never changes
+            && this.target == that.target
             && this.x == that.x
             && this.y == that.y
-            && this.direction.Eq(that.direction);
+            && this.propIndex == that.propIndex;
     }
 
-    override public int GetHashCode()
-    => direction.GetHashCode()*31*31 + x*31 + y;
+    override public int GetHashCode() => propIndex*31*31 + x*31 + y;
 
     bool Move(Vector2 dir){
         var p = position + dir;
         if(ground.IsObstructed(p)) return false;
         position = p;
-        if(dedupOrientation){
-            direction = ground.IsPropNearby(position)
-                ? (Vector2i)dir : new Vector2i(0, 0);
-        }else{
-            direction = (Vector2i)dir;
-        }
+        propIndex = ground.PullablePropIndex(position, dir);
         return true;
     }
 
     public void Print(object x) => UnityEngine.Debug.Log(x);
 
     override public string ToString()
-    => $"M[{x}, {y} to {direction}]";
+    => $"M[{x}, {y} /p:{propIndex}]";
 
     // -------------------------------------------------------------
 

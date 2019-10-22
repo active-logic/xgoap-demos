@@ -15,13 +15,31 @@ This section details current planning overheads, and where optimization work is 
 
 Stats from running headless (no rendering) on a low voltage mobile processor (fka 'Core M'), solving for the blue sentinel.
 
-Plans per second: 30
+Plans per second: 50 (20ms)
 Plan length: 33 steps
-Iterations: 790
+Iterations: 733
 
 ## Past optimizations (most recent first)
 
 If you are looking for inspiration on how to optimize your solver, the recommendation is to start at the *bottom* of this list. Later optimizations tend to be costlier, and more specific.
+
+## 5. Checking less often for nearby props
+
+Since we wish to dedup states where agent orientation is not relevant, we check for nearby props. At this point this is the main overhead.
+However we actually don't care about orientation at all - what we do care about is whether a prop can be pulled or not. If we're going to pre-evaluate this, we might as well store the index of whatever prop can be pulled.
+
+This is a significant change:
+- The sentinel model is changing; instead of orientation store prop index.
+- 'Pull' planning action is simplified to the extreme (tests are carried out within the 'move' action ahead of time)
+- Equals and hashcode simpler (one int less)
+
+At this point actions, hashing and clone are in the same ball park - or rather, there is no consistent response in the profiler.
+
+Improvements, however, are concrete:
+- 50 plans/per second (up from 30)
+- Solved in 733 iterations (down from 790)
+
+
 
 ## 4. Trim the state space
 

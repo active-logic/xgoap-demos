@@ -59,6 +59,22 @@ public class GroundModel : Clonable{
             || IsProp(q + Vector2.down);
     }
 
+    // Pull the prop at index to 'position' and return the vector
+    // matching the vector matching this move.
+    public Vector2 PullProp(int propIndex, Vector2 position){
+        var p0 = (Vector2)props[propIndex];
+        props[propIndex] = (Vector2i) position;
+        return position - p0;
+    }
+
+    public int PullablePropIndex(Vector2 position, Vector2 dir){
+        if(IsObstructed(position-dir)) return -1;
+        var P = (Vector2i)(position + dir);
+        for(int i = 0; i < props.Length; i++)
+            if(P.Eq(props[i])) return i;
+        return -1;
+    }
+
     public bool IsProp(Vector2 atPos){
         foreach(var p in props) if(p == atPos) return true;
         return false;
