@@ -6,11 +6,11 @@ using static UnityEngine.Mathf;
 
 [Serializable] public class SentinelModel : Agent, Clonable{
 
+    public static bool dedupOrientation = true;
     const int range = 3;
     public int x, y;
     public Vector2i direction;
     public Target target;
-    // The ground model is static so don't serialize it
     GroundModel ground;
 
     Func<Cost>[] _actions;
@@ -88,12 +88,13 @@ using static UnityEngine.Mathf;
     bool Move(Vector2 dir){
         var p = position + dir;
         if(ground.IsObstructed(p)) return false;
-        if(p.x < -5.5f){
-            Debug.LogError($"Out of boord coord not obst. {p}");
-        }
         position = p;
-        direction = ground.IsPropNearby(position)
-            ? (Vector2i)dir : new Vector2i(0, 0);
+        if(dedupOrientation){
+            direction = ground.IsPropNearby(position)
+                ? (Vector2i)dir : new Vector2i(0, 0);
+        }else{
+            direction = (Vector2i)dir;
+        }
         return true;
     }
 

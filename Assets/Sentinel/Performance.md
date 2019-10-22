@@ -2,39 +2,52 @@
 
 # Performance and optimization
 
-## Speeding up ground model comparisons
+## Current work
 
-Initially the ground model encoded both props and tiles. This caused large hashing overheads since the solver needs to check the map for equality whenever hashing.
-This was improved by separating the props (what can be moved) from the map itself (static).
+This section details current planning overheads, and where optimization work is headed (updated whenever substantial optimizations are performed).
+(Overheads don't add up to 100% because player loop is slacking)
 
-## Speeding up the clone method
+```
+- 19% Planning actions [FOCUS]
+- 14% Insert node (inc. hashing 7%)
+-  9% Clone state
+```
 
-With comparisons out of the way (for now), cloning represents almost 100% of processing overheads. So we'd like to provide our own. This works like a charm. Cloning via serialization may be slow, but another advantage when cloning manually is that we don't need a deep clone - if we already know that certain data isn't going to change, we just forward references.
+Stats from running headless (no rendering) on a low voltage mobile processor (fka 'Core M'), solving for the blue sentinel.
 
-Speeding up the clone method relegated cloning to ~ 1% of processing overheads.
+Plans per second: 30
+Plan length: 33 steps
+Iterations: 790
 
-## Back to hashing and equality
+## Past optimizations (most recent first)
 
-At this point the ground model comparison is 50% of planning cost, courtesy `SequenceEqual`. Can this be improved?
+If you are looking for inspiration on how to optimize your solver, the recommendation is to start at the *bottom* of this list. Later optimizations tend to be costlier, and more specific.
 
-- Use arrays, not lists.
-- If we know the type, we don't need a generic equality comparer
-- Avoid pattern matching (may trigger GC)
+## 4. Trim the state space
 
-Tweaked hashcodes too.
+In this case the state space was inflated because the agent's NSEW orientation was taken into account (x4).
+Only caring about orientation when there's a block to pull. In most cases, then, orientation can be replaced by a ground value of (0, 0)
 
-## A ghost in the closet
+Handled as follows:
+- After a move, check surrounding tiles.
+- If no prop is found, zero the orientation vector.
 
-We could continue with petty optimizations and get linear improvements but most planners have a common problem: the more variables in your model, the bigger the state space.
+[PENDING quantitative result]
 
-In this case we introduced the agent's orientation as a variable. Though represented as a vector this encodes 4 states. So we're making our search space 4 times bigger. But for what?
+## 3. Faster hashing
 
-We only care about orientation when there's a block to pull. In most cases, then, orientation could be ignored.
+- Store data in arrays (vs lists) when possible.
+- Avoid generic equality comparers
+- Avoid pattern matching (somehow this fairly intensive allocations)
+- Tweak hashcodes
 
-This is handled as follows:
-- After a move (NSEW), check surrounding tiles.
-- If no prop is found, zero the direction vector.
+## 2. Speed up the clone method
 
-Paradoxically, we've added a state to the 'orientation' variable; but because this is a 'ground state' it can be used to dedup locations in the state space.
+The default is deep clone via serialization. This is helpful when getting started, and to ensure no clone related errors are introduced (beware - 'rogue clones' introduce subtle bugs which may affect your mental health).
 
-NOTE: pending quantitative results on how this impacted the search
+At this point cloning accounted for ~100% of planning overheads. Got this down to ~1%.
+
+## 1. Exclude planning-static states from equals comparisons
+
+Comparing state is used in hashing since we don't want to revisit previously entered states.
+In the sentinel demo, map state is mostly static so I separated ground state (never changes) from prop states (props can be moved)

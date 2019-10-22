@@ -2,7 +2,7 @@ using UnityEngine;
 using NUnit.Framework;
 using Activ.GOAP;
 
-public class TestMoveBlock : TestBase{
+public class TestMoveBlockAndPerf : TestBase{
 
     GroundModel ground;
 
@@ -22,22 +22,31 @@ public class TestMoveBlock : TestBase{
         o( !ground.IsObstructed(B) );
     }
 
-    [Test] public void Test(){
+    [Test] public void PerfTest([Values(true, false)]bool trimDir){
+        var z = 0;
+        for(int i=0;i<10;i++){
+        SentinelModel.dedupOrientation = trimDir;
+        // -4, 2  Puts the sentinel top-right
+        // -3, -2 Is on left side, faster
         var x =
-            new SentinelModel((Transform)null,
-                              new SentinelModel.Target(-3, -2),
+            new SentinelModel((Transform)null,  // -4, 2
+                              new SentinelModel.Target(-4, 2),
                               ground);
         o( x.target != null );
         var p = new Solver<SentinelModel>();
-        p.maxIter = 512;
+        p.maxIter = 2000;
         p.maxNodes = 512;
         var g = HGoal();
         var s = p.Next(x, in g);
-        print(p.state.ToString());
-        print($"Iter: {p.I}, max fringe: {p.fxMaxNodes}");
-        var path = s.Path();
-        o( path.Length, 25 );
-        foreach(var n in path) print(n.ToString());
+        //print(p.state.ToString());
+        z += p.I;
+        //rint($"Iter: {p.I}, max fringe: {p.fxMaxNodes}");
+        //var path = s.Path();
+        o( s.Path().Length, 33 );
+        //foreach(var n in path) print(n.ToString());
+        }
+        print($"Iter x: {z/10}"); // 1166 x 790
+        // speed increase is 25%; saved iterations 32%
     }
 
     Goal<SentinelModel> Goal()

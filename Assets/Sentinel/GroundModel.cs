@@ -46,13 +46,8 @@ public class GroundModel : Clonable{
         var w = q + Vector2.one * 5;
         int x = Mathf.RoundToInt(w.x),
             y = Mathf.RoundToInt(w.y);
-        //
-        var d = Vector2.Distance(w, new Vector2(x, y));
-        if(d > 0.1) Debug.LogError("bad conversion");
-        //
         if(x < 0 || x > 10) return true;
         if(y < 0 || y > 10) return true;
-        if(q.x < -5.5)Debug.LogError("This should be obstructed: " + x+", "+y);
         return (this[x, y] != 0) || IsProp(q);
 
     }
