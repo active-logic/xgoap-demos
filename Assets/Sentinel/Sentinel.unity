@@ -582,7 +582,7 @@ MonoBehaviour:
     OnCapacityOverflow: 1
     OnMaxIterOverflow: 1
     warnOnFail: 1
-    warnOnOverflow: 1
+    warnOnOverflow: 0
   target: {x: 3, y: 5}
 --- !u!96 &609357483
 TrailRenderer:

@@ -323,12 +323,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1592894246}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e241b87305be4a5e89db2b32403b7de, type: 3}
+  m_Script: {fileID: 11500000, guid: b14c362ba48c5498598ec1b4b0c87360, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   verbose: 1
-  busy: 0
-  frameBudget: 5
+  config:
+    frameBudget: 25
+    maxNodes: 1000
+    maxIter: 1000
+  policies:
+    OnFail: 1
+    OnCapacityOverflow: 2
+    OnMaxIterOverflow: 2
+    warnOnFail: 0
+    warnOnOverflow: 0
   bake: 0
 --- !u!65 &1592894248
 BoxCollider:

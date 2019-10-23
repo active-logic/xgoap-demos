@@ -19,9 +19,6 @@ public class SentinelAI : GameAI<SentinelModel>{
 
     void Start() => ground = FindObjectOfType<Ground>();
 
-    override public void Update()
-    { busy = actor.moving; base.Update(); }
-
     public void MoveLeft()    => actor.Move(left);
     public void MoveRight()   => actor.Move(right);
     public void MoveForward() => actor.Move(forward);
@@ -32,6 +29,8 @@ public class SentinelAI : GameAI<SentinelModel>{
         var w = ground.WillMoveProp(transform);
         actor.Pull(w);
     }
+
+    override public bool IsActing() => actor.moving;
 
     override public Goal<SentinelModel> Goal()
     => new Goal<SentinelModel>(
