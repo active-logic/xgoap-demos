@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 using Activ.GOAP;
-using static UnityEngine.Vector2;
+using static Vector2i;
 using static UnityEngine.Mathf;
 
 [Serializable] public class SentinelModel : Agent, Clonable{
@@ -21,20 +21,18 @@ using static UnityEngine.Mathf;
         ground = (GroundModel)ground.Clone()
     };
 
-    public Vector2 position{
-        get => new Vector2(x, y);
-        set{ x = RoundToInt(value.x); y = RoundToInt(value.y); }
+    public Vector2i position{
+        get => new Vector2i(x, y);
+        set{ x = value.x; y = value.y; }
     }
 
     public SentinelModel(Transform t, Target target,
                                       GroundModel ground) : this(){
         position = (t != null)
-            ? new Vector2(t.position.x, t.position.z)
-            : new Vector2(0, 0);
+            ? new Vector2i(t.position.x, t.position.z) : (0, 0);
         //
         var dir = (t != null)
-            ? new Vector2(t.forward.x, t.forward.z)
-            : new Vector2(0, 0);
+            ? new Vector2i(t.forward.x, t.forward.z) : (0, 0);
         propIndex = ground.PullablePropIndex(position, dir);
         //
         this.ground = ground;
@@ -73,22 +71,21 @@ using static UnityEngine.Mathf;
         return (target = null, 1);
     }
 
+    // Note: target compares by ref because it can be nulled but
+    // never changes
     override public bool Equals(object other){
-        var that = other as SentinelModel;
-        if(that == null) Print("Why is that null?");
-        //if(that.ground == null) Print("Why is that ground null?");
-        //if(that.target == null) Print("Why is that target null?");
-        return this.ground.IsEqual(that.ground)
-            // by ref because target itself never changes
-            && this.target == that.target
-            && this.x == that.x
+        var that = (SentinelModel)other;
+        return this.x == that.x
             && this.y == that.y
-            && this.propIndex == that.propIndex;
+            && this.ground.IsEqual(that.ground)
+            && this.propIndex == that.propIndex
+            && this.target == that.target;
     }
 
-    override public int GetHashCode() => propIndex*31*31 + x*31 + y;
+    override public int GetHashCode()
+    => (((ground.GetHashCode()*31 + propIndex)*31) + x)*31 + y;
 
-    bool Move(Vector2 dir){
+    bool Move(Vector2i dir){
         var p = position + dir;
         if(ground.IsObstructed(p)) return false;
         position = p;

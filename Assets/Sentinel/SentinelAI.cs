@@ -52,7 +52,7 @@ public class SentinelAI : GameAI<SentinelModel>{
     Goal<SentinelModel> Reach()
     => new Goal<SentinelModel>(
         m => m.position == target,
-        m => Vector2.Distance(m.position, target)
+        m => Vector2i.Distance(m.position, (Vector2i)target)
     );
 
     float Dist(Component c) => c == this ? LARGE_VALUE

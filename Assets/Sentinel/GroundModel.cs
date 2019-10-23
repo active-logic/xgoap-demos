@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+//using System.Linq;
 using UnityEngine;
 using Activ.GOAP;
 
@@ -42,32 +42,30 @@ public class GroundModel : Clonable{
 
     public void ClearProps() => props = new Vector2i[0];
 
-    public bool IsObstructed(Vector2 q){
-        var w = q + Vector2.one * 5;
-        int x = Mathf.RoundToInt(w.x),
-            y = Mathf.RoundToInt(w.y);
-        if(x < 0 || x > 10) return true;
-        if(y < 0 || y > 10) return true;
-        return (this[x, y] != 0) || IsProp(q);
+    public bool IsObstructed(Vector2i pos){
+        if(pos.x < -5 || pos.x > 5) return true;
+        if(pos.y < -5 || pos.y > 5) return true;
+        var w = pos + 5;
+        return (this[w.x, w.y] != 0) || IsProp(pos);
 
     }
 
-    public bool IsPropNearby(Vector2 q){
-        return IsProp(q + Vector2.right)
-            || IsProp(q + Vector2.left)
-            || IsProp(q + Vector2.up)
-            || IsProp(q + Vector2.down);
+    public bool IsPropNearby(Vector2i P){
+        return IsProp(P + Vector2i.right)
+            || IsProp(P + Vector2i.left)
+            || IsProp(P + Vector2i.up)
+            || IsProp(P + Vector2i.down);
     }
 
     // Pull the prop at index to 'position' and return the vector
     // matching the vector matching this move.
-    public Vector2 PullProp(int propIndex, Vector2 position){
-        var p0 = (Vector2)props[propIndex];
-        props[propIndex] = (Vector2i) position;
+    public Vector2i PullProp(int propIndex, Vector2i position){
+        var p0 = props[propIndex];
+        props[propIndex] = position;
         return position - p0;
     }
 
-    public int PullablePropIndex(Vector2 position, Vector2 dir){
+    public int PullablePropIndex(Vector2i position, Vector2i dir){
         if(IsObstructed(position-dir)) return -1;
         var P = (Vector2i)(position + dir);
         for(int i = 0; i < props.Length; i++)
@@ -75,8 +73,8 @@ public class GroundModel : Clonable{
         return -1;
     }
 
-    public bool IsProp(Vector2 atPos){
-        foreach(var p in props) if(p == atPos) return true;
+    public bool IsProp(Vector2i atPos){
+        foreach(var p in props) if(p.Eq(atPos)) return true;
         return false;
     }
 
@@ -91,11 +89,16 @@ public class GroundModel : Clonable{
         for(int i = 0; i < props.Length; i++){
             Debug.Log($"Prop {i} - {props[i]}");
         }
-        throw new System.Exception($"Could not move prop: {src}, {(Vector2i)src}");
+        throw new System.Exception(
+                    $"Could not move prop: {src}, {(Vector2i)src}");
     }
 
-    override public int GetHashCode()
-    => map.Aggregate(0, (x, y) => x + y);
+    override public int GetHashCode(){
+        var c = 0;
+        for(int i = 0; i < props.Length; i++){
+            c = c * 31 + props[i].GetHashCode();
+        } return c;
+    }
 
     // NOTE:
     // - Map is planning-static, ignore

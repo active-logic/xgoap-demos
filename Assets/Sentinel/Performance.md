@@ -2,44 +2,31 @@
 
 # Performance and optimization
 
-## Current work
+Optimization on the demo is an ongoing process; roughly, planning overheads are divided between:
 
-This section details current planning overheads, and where optimization work is headed (updated whenever substantial optimizations are performed).
-(Overheads don't add up to 100% because player loop is slacking)
+- Effecting planning actions
+- Hashing (insert nodes in 'visited' set)
+- Cloning (duplicate model state)
 
-```
-- 19% Planning actions [FOCUS]
-- 14% Insert node (inc. hashing 7%)
--  9% Clone state
-```
+The following is an approximation (reflects a Geekbench 4 single score of ~4000)
 
-Stats from running headless (no rendering) on a low voltage mobile processor (fka 'Core M'), solving for the blue sentinel.
-
-Plans per second: 50 (20ms)
-Plan length: 33 steps
-Iterations: 733
+- Plans per second: 50 (20ms)
+- Plan length: 33 steps
+- Iterations: 733
 
 ## Past optimizations (most recent first)
 
 If you are looking for inspiration on how to optimize your solver, the recommendation is to start at the *bottom* of this list. Later optimizations tend to be costlier, and more specific.
 
+## 6. Fixed hash implementations
+
+Got a lot more from `HashSet` with a half decent hash function.
+
 ## 5. Checking less often for nearby props
 
-Since we wish to dedup states where agent orientation is not relevant, we check for nearby props. At this point this is the main overhead.
-However we actually don't care about orientation at all - what we do care about is whether a prop can be pulled or not. If we're going to pre-evaluate this, we might as well store the index of whatever prop can be pulled.
-
-This is a significant change:
-- The sentinel model is changing; instead of orientation store prop index.
-- 'Pull' planning action is simplified to the extreme (tests are carried out within the 'move' action ahead of time)
-- Equals and hashcode simpler (one int less)
-
-At this point actions, hashing and clone are in the same ball park - or rather, there is no consistent response in the profiler.
-
-Improvements, however, are concrete:
-- 50 plans/per second (up from 30)
-- Solved in 733 iterations (down from 790)
-
-
+As part of effecting moves, we now check for nearby props.
+But we don't actually care about nearby props, or the agent's orientation. Very specifically we only need to know whether a prop can be pulled.
+Refactoring reflects this. Also cleaned up redundant numerical conversions.
 
 ## 4. Trim the state space
 
