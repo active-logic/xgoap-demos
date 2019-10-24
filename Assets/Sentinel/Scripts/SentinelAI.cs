@@ -30,7 +30,7 @@ public class SentinelAI : GameAI<SentinelModel>{
         actor.Pull(w);
     }
 
-    override public bool IsActing() => actor.moving;
+    override public bool IsActing() => actor.busy;
 
     override public Goal<SentinelModel> Goal()
     => new Goal<SentinelModel>(

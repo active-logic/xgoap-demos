@@ -44,8 +44,8 @@ public class Ground : MonoBehaviour{
         var B = bot.position;
         var P = bot.position + bot.forward;
         foreach(var k in props){
-            var d = Vector3.Distance(P, k.transform.position);
-            if(d < 0.1){
+            var u = P - k.transform.position; u.y = 0;
+            if(u.magnitude < 0.1){
                 var here = new Vector2(B.x, B.z);
                 var ahead = new Vector2(P.x, P.z);
                 model.MoveProp(ahead, here);
