@@ -281,7 +281,32 @@ PrefabInstance:
     - target: {fileID: 2698487362928202000, guid: 168d31e9f7eeb4b52baad82826968222,
         type: 3}
       propertyPath: speed
-      value: 2
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2698487362928202015, guid: 168d31e9f7eeb4b52baad82826968222,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2698487362928202015, guid: 168d31e9f7eeb4b52baad82826968222,
+        type: 3}
+      propertyPath: config.frameBudget
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2698487362928202015, guid: 168d31e9f7eeb4b52baad82826968222,
+        type: 3}
+      propertyPath: verbose
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2698487362928202015, guid: 168d31e9f7eeb4b52baad82826968222,
+        type: 3}
+      propertyPath: config.maxIter
+      value: 4000
+      objectReference: {fileID: 0}
+    - target: {fileID: 2698487362928202015, guid: 168d31e9f7eeb4b52baad82826968222,
+        type: 3}
+      propertyPath: config.maxNodes
+      value: 4000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 168d31e9f7eeb4b52baad82826968222, type: 3}
@@ -488,6 +513,16 @@ PrefabInstance:
         type: 3}
       propertyPath: rotationalSpeed
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2698487362928202015, guid: 168d31e9f7eeb4b52baad82826968222,
+        type: 3}
+      propertyPath: policies.warnOnFail
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2698487362928202015, guid: 168d31e9f7eeb4b52baad82826968222,
+        type: 3}
+      propertyPath: policies.warnOnOverflow
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 168d31e9f7eeb4b52baad82826968222, type: 3}

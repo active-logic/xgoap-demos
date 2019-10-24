@@ -67,11 +67,12 @@ public class Sentinel : MonoBehaviour{
         var α = Angle(view.forward, transform.forward);
         status = $"Aiming towards target: {α:0.#}";
         if(α > 0.01f) return;
-        charge += 0.01f;
+        charge += 0.02f;
         if(charge >= 0.9f) beam.enabled = true;
         if(charge >= 1.0f){
             Destroy(target.gameObject);
-            Instantiate(explosionPrefab, target.position, Quaternion.identity);
+            Instantiate(explosionPrefab, target.position,
+                                         Quaternion.identity);
             beam.enabled = false;
         }
     }

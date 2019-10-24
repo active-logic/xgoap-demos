@@ -12,7 +12,7 @@ using static UnityEngine.Mathf;
     GroundModel ground;
     int propIndex = -1;  // index of prop that can be pulled, or -1
 
-    Func<Cost>[] _actions;
+    Func<Cost>[] actions;
 
     public object Clone() => new SentinelModel(){
         x = x, y = y,
@@ -39,24 +39,15 @@ using static UnityEngine.Mathf;
         this.target = target;
     }
 
-    SentinelModel(){
-        _actions = new Func<Cost>[]
-        { MoveLeft, MoveBack, MoveRight, MoveForward, Shoot, Pull };
-    }
+    SentinelModel() => actions = new Func<Cost>[]
+    { MoveLeft, MoveBack, MoveRight, MoveForward, Shoot, Pull };
 
-    public Func<Cost>[] actions => _actions;
+    public Func<Cost>[] Actions() => actions;
 
-    public Cost MoveLeft()
-    { if(Move(left))  return 1; else return false; }
-
-    public Cost MoveRight()
-    { if(Move(right)) return 1; else return false; }
-
-    public Cost MoveBack()
-    { if(Move(down))  return 1; else return false; }
-
-    public Cost MoveForward()
-    { if(Move(up))    return 1; else return false; }
+    public Cost MoveLeft()    => Move(left);
+    public Cost MoveRight()   => Move(right);
+    public Cost MoveBack()    => Move(down);
+    public Cost MoveForward() => Move(up);
 
     public Cost Pull(){
         if(propIndex == -1) return false;
