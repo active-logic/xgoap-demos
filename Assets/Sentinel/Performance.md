@@ -5,18 +5,27 @@
 Optimization on the demo is an ongoing process; roughly, planning overheads are divided between:
 
 - Effecting planning actions
-- Hashing (insert nodes in 'visited' set)
+- Hashing (track visited nodes and sort open list)
 - Cloning (duplicate model state)
 
 The following is an approximation (reflects a Geekbench 4 single score of ~4000)
 
-- Plans per second: 50 (20ms)
+- Plans per second: 105 (~20ms)
 - Plan length: 33 steps
 - Iterations: 733
+
+Currently looking at making this 2 to 2.5 times faster:
+- Cloning can be made faster by pooling. Already tested, saves ~80%
+- Hashing can be improved by using a custom structure (vs a HashSet, for visited nodes) and improving how the open list is sorted; currently uses a heuristic that says new nodes should add towards the top, but still traverses, on average a big 50 nodes per iteration.
+- Planning actions are 20% of current overheads, path to further optimizations unclear.
 
 ## Past optimizations (most recent first)
 
 If you are looking for inspiration on how to optimize your solver, the recommendation is to start at the *bottom* of this list. Later optimizations tend to be costlier, and more specific.
+
+## 7. Relax cost ordering
+
+Less precise cost ordering makes inserting into the open list faster. Overall, makes headless test twice as fast; benefits less startling in the demo itself.
 
 ## 6. Fixed hash implementations
 

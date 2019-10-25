@@ -66,11 +66,17 @@ public class GroundModel : Clonable{
     }
 
     public int PullablePropIndex(Vector2i position, Vector2i dir){
-        if(IsObstructed(position-dir)) return -1;
-        var P = (Vector2i)(position + dir);
-        for(int i = 0; i < props.Length; i++)
-            if(P.Eq(props[i])) return i;
-        return -1;
+        var k = FastPullablePropIndex(position, dir);
+        if(k == -1 || IsObstructed(position-dir)) return -1;
+        return k;
+    }
+
+    public int FastPullablePropIndex(Vector2i position,
+                                     Vector2i dir){
+        var P = position + dir;
+        int k = -1;
+        for(int i=0; i<props.Length; i++) if(P.Eq(props[i])) k = i;
+        return k;
     }
 
     public bool IsProp(Vector2i atPos){

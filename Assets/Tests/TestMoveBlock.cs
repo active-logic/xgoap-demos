@@ -21,6 +21,7 @@ public class TestPerf : TestBase{
         var p = new Solver<SentinelModel>();
         p.maxIter = 2000;
         p.maxNodes = 512;
+        p.tolerance = 1.75f;
         var g = HGoal();
         var s = p.Next(x, in g);
         //print(p.state.ToString());

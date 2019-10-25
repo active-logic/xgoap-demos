@@ -80,7 +80,7 @@ using static UnityEngine.Mathf;
         var p = position + dir;
         if(ground.IsObstructed(p)) return false;
         position = p;
-        propIndex = ground.PullablePropIndex(position, dir);
+        propIndex = ground.FastPullablePropIndex(position, dir);
         return true;
     }
 
