@@ -52,7 +52,7 @@ public class TestSentinel : TestBase{
         var path = s.Path();
         o( path.Length, 6 );
         print($"Iter: {p.I}, max fringe: {p.fxMaxNodes}");
-        print(p.state.ToString());
+        print(p.status.ToString());
         foreach(var n in path) print(n.ToString());
     }
 
@@ -69,7 +69,7 @@ public class TestSentinel : TestBase{
         var path = s.Path();
         o( path.Length, 6 );
         print($"Iter: {p.I}, max fringe: {p.fxMaxNodes}");
-        print(p.state.ToString());
+        print(p.status.ToString());
         foreach(var n in path) print(n.ToString());
     }
 
@@ -87,7 +87,7 @@ public class TestSentinel : TestBase{
         print($"Iter: {p.I}, max fringe: {p.fxMaxNodes}");
         var path = s.Path();
         o( path.Length, 6 );
-        print(p.state.ToString());
+        print(p.status.ToString());
         foreach(var n in path) print(n.ToString());
     }
 

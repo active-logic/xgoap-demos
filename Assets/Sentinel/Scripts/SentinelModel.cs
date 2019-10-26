@@ -4,7 +4,7 @@ using Activ.GOAP;
 using static Vector2i;
 using static UnityEngine.Mathf;
 
-[Serializable] public class SentinelModel : Agent, Clonable{
+public class SentinelModel : Agent, Clonable<SentinelModel>{
 
     const int range = 3;
     public int x, y;
@@ -14,12 +14,18 @@ using static UnityEngine.Mathf;
 
     Func<Cost>[] actions;
 
-    public object Clone() => new SentinelModel(){
-        x = x, y = y,
-        propIndex = propIndex,
-        target = target,
-        ground = (GroundModel)ground.Clone()
-    };
+    public SentinelModel Allocate()
+    => new SentinelModel();
+
+    public SentinelModel Clone(SentinelModel w){
+        w.x         = x;
+        w.y         = y;
+        w.propIndex = propIndex;
+        // Copy ref, does not mutate while planning
+        w.target    = target;
+        ground.Clone(w.ground);
+        return w;
+    }
 
     public Vector2i position{
         get => new Vector2i(x, y);
@@ -39,8 +45,11 @@ using static UnityEngine.Mathf;
         this.target = target;
     }
 
-    SentinelModel() => actions = new Func<Cost>[]
-    { MoveLeft, MoveBack, MoveRight, MoveForward, Shoot, Pull };
+    public SentinelModel(){
+        actions = new Func<Cost>[]
+        { MoveLeft, MoveBack, MoveRight, MoveForward, Shoot, Pull };
+        ground = new GroundModel(4);
+    }
 
     public Func<Cost>[] Actions() => actions;
 

@@ -16,7 +16,9 @@ namespace Activ.GOAP{
 
     [NonSerialized] AI client;
 
-    public Baker(AI client = null) => this.client = client;
+    public Baker(){}
+
+    public Baker(AI client) => this.client = client;
 
     public Cost Bake(){
         bake += (temperature / 2); return true;
@@ -30,14 +32,15 @@ namespace Activ.GOAP{
     Func<Cost>[] Agent.Actions()
     => state != Cooking.Burned ? new Func<Cost>[]{ Bake } : null;
 
-    Action[] Parametric.Functions()
+    Complex[] Parametric.Functions()
     => state != Cooking.Burned ? CookingOptions() : null;
 
-    Action[] CookingOptions(){
-        List<Action> actions = new List<Action>();
+    // TODO - slow
+    Complex[] CookingOptions(){
+        List<Complex> actions = new List<Complex>();
         for(int i = 0; i <= MaxHeat; i += Step){
             var j = i;  // Do not capture the iterator!
-            actions.Add(new Action(
+            actions.Add(new Complex(
                 () => SetTemperature(j),
                 () => client.SetTemperature(j)
             ));

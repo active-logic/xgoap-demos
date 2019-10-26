@@ -8,7 +8,7 @@ public class SolverEditor : Editor {
         DrawDefaultInspector();
         SolverInfo self = (SolverInfo)target;
         var stats = self.stats;
-        LabelField($"Status: {stats?.state}");
+        LabelField($"Status: {stats?.status}");
         LabelField($"Iterations: {stats?.I}");
         LabelField($"Fringe: {stats?.fxMaxNodes}");
     }

@@ -5,13 +5,26 @@ using UnityEngine;
 using Activ.GOAP;
 
 [Serializable]
-public class GroundModel : Clonable{
+public class GroundModel : Clonable<GroundModel>{
 
     public Vector2i[] props;
     int[] map;
 
-    public object Clone()
-    => new GroundModel(map, (Vector2i[])props.Clone());
+    public GroundModel Allocate() => new GroundModel();
+
+    public GroundModel Clone(GroundModel g){
+        if(g.props != null && g.props.Length == props.Length)
+            Array.Copy(props, 0, g.props, 0, props.Length);
+        else
+            g.props = (Vector2i[])props.Clone();
+        g.map = map;
+        return g;
+    }
+
+    public GroundModel(int maxPropCount){
+        map = null;
+        props = new Vector2i[maxPropCount];
+    }
 
     public GroundModel(){
         map = DefaultMap.data;
