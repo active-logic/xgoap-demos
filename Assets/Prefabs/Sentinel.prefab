@@ -221,7 +221,7 @@ MonoBehaviour:
     maxNodes: 1000
     maxIter: 2000
     tolerance: 1.75
-    safeActions: 1
+    safe: 0
   policies:
     OnFail: 1
     OnCapacityOverflow: 1
