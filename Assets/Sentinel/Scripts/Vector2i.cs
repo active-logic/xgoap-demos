@@ -2,7 +2,7 @@ using UnityEngine;
 using static UnityEngine.Mathf;
 using System;
 
-[System.Serializable] public readonly struct Vector2i{
+public readonly struct Vector2i{
 
     public static readonly Vector2i right = (1, 0), left = (-1, 0),
                                     up = (0, 1),    down = (0, -1);
@@ -14,6 +14,9 @@ using System;
     { this.x = RoundToInt(x); this.y = RoundToInt(y); }
 
     public static implicit operator Vector2i(ValueTuple<int, int> P)
+    => new Vector2i(P.Item1, P.Item2);
+
+    public static implicit operator Vector2i(ValueTuple<float, float> P)
     => new Vector2i(P.Item1, P.Item2);
 
     public static explicit operator Vector2i(Vector2 v)

@@ -100,7 +100,7 @@ public class SentinelModel : Agent, Clonable<SentinelModel>{
 
     // -------------------------------------------------------------
 
-    [Serializable] public class Target{
+    public class Target{
 
         public int x, y;
 

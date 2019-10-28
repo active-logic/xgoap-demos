@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-//using System.Linq;
-using UnityEngine;
+//using UnityEngine;
 using Activ.GOAP;
 
-[Serializable]
 public class GroundModel : Clonable<GroundModel>{
 
     public Vector2i[] props;
@@ -97,16 +95,13 @@ public class GroundModel : Clonable<GroundModel>{
         return false;
     }
 
-    public void MoveProp(Vector2 src, Vector2 dst){
+    public void MoveProp(Vector2i src, Vector2i to){
         for(int i = 0; i < props.Length; i++){
-            var d = Vector2.Distance((Vector2)props[i], src);
+            var d = Vector2i.Distance(props[i], src);
             if(d < 0.1f){
-                props[i] = (Vector2i)dst;
+                props[i] = to;
                 return;
             }
-        }
-        for(int i = 0; i < props.Length; i++){
-            Debug.Log($"Prop {i} - {props[i]}");
         }
         throw new System.Exception(
                     $"Could not move prop: {src}, {(Vector2i)src}");

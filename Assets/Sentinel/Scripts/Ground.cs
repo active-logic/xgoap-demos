@@ -46,9 +46,7 @@ public class Ground : MonoBehaviour{
         foreach(var k in props){
             var u = P - k.transform.position; u.y = 0;
             if(u.magnitude < 0.1){
-                var here = new Vector2(B.x, B.z);
-                var ahead = new Vector2(P.x, P.z);
-                model.MoveProp(ahead, here);
+                model.MoveProp((P.x, P.z), to: (B.x, B.z));
                 return k;
             }
         }
