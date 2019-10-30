@@ -11,28 +11,23 @@ public class TestPerf : TestBase{
     [Test] public void Test_x_100(){
         var z = 0;
         for(int i=0;i<100;i++){
-        // -4, 2  Puts the sentinel top-right
-        // -3, -2 Is on left side, faster
-        var x =
+            // -4, 2  Puts the sentinel top-right
+            // -3, -2 Is on left side, faster
+            var x =
             new SentinelModel((Transform)null,  // -4, 2
                               new SentinelModel.Target(-4, 2),
                               ground);
-        o( x.target != null );
-        var p = new Solver<SentinelModel>();
-        p.maxIter = 2000;
-        p.maxNodes = 512;
-        p.tolerance = 1.75f;
-        var g = HGoal();
-        var s = p.Next(x, in g);
-        //print(p.state.ToString());
-        z += p.I;
-        //rint($"Iter: {p.I}, max fringe: {p.peakFringeSize}");
-        //var path = s.Path();
-        o( s.Path().Length, 33 );
-        //foreach(var n in path) print(n.ToString());
+            o( x.target != null );
+            var p = new Solver<SentinelModel>();
+            p.maxIter = 2000;
+            p.maxNodes = 512;
+            p.tolerance = 1.75f;
+            var g = HGoal();
+            var s = p.Next(x, in g);
+            z += p.iteration;
+            o( s.Path().Length, 33 );
         }
         print($"Iter x: {z/10}"); // 1166 x 790
-        // speed increase is 25%; saved iterations 32%
     }
 
     Goal<SentinelModel> Goal() => ( m => m.target == null, null );

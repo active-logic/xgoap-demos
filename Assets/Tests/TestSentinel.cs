@@ -51,7 +51,7 @@ public class TestSentinel : TestBase{
         var s = p.Next(x, in g);
         var path = s.Path();
         o( path.Length, 6 );
-        print($"Iter: {p.I}, max fringe: {p.peakFringeSize}");
+        print($"Iter: {p.iteration}, max fringe: {p.peak}");
         print(p.status.ToString());
         foreach(var n in path) print(n.ToString());
     }
@@ -68,7 +68,7 @@ public class TestSentinel : TestBase{
         var s = p.Next(x, in g);
         var path = s.Path();
         o( path.Length, 6 );
-        print($"Iter: {p.I}, max fringe: {p.peakFringeSize}");
+        print($"Iter: {p.iteration}, max fringe: {p.peak}");
         print(p.status.ToString());
         foreach(var n in path) print(n.ToString());
     }
@@ -84,7 +84,7 @@ public class TestSentinel : TestBase{
         p.maxNodes = 100000;
         var g = Goal();
         var s = p.Next(x, in g);
-        print($"Iter: {p.I}, max fringe: {p.peakFringeSize}");
+        print($"Iter: {p.iteration}, max fringe: {p.peak}");
         var path = s.Path();
         o( path.Length, 6 );
         print(p.status.ToString());
