@@ -9,7 +9,7 @@ public class SolverEditor : Editor {
         SolverInfo self = (SolverInfo)target;
         var stats = self.stats;
         LabelField($"Status: {stats?.status}");
-        LabelField($"Iterations: {stats?.I}");
-        LabelField($"Fringe: {stats?.peakFringeSize}");
+        LabelField($"Iterations: {stats?.iteration}");
+        LabelField($"Fringe: {stats?.peak}");
     }
 }}
