@@ -84,8 +84,7 @@ This is assuming a `Target` class which holds the target coordinates.
 Now we update the goal - we're no longer trying to reach any specific position; instead we would like the agent to shoot the nearest target.
 
 ```cs
-override public Goal<SentinelModel> Goal()
-=> new Goal<SentinelModel>(
+override public Goal<SentinelModel> Goal() => (
     m => m.target == null,
     m => m.target?.Dist(m.x, m.y) ?? 0
 );

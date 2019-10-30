@@ -33,10 +33,8 @@ public class SentinelAI : GameAI<SentinelModel>{
     override public bool IsActing() => actor.busy;
 
     override public Goal<SentinelModel> Goal()
-    => new Goal<SentinelModel>(
-        m => m.target == null,
-        m => m.target?.Dist(m.x, m.y) ?? 0
-    );
+    => ( m => m.target == null,
+         m => m.target?.Dist(m.x, m.y) ?? 0 );
 
     override public SentinelModel Model(){
         var t = nearestTarget;
@@ -48,8 +46,7 @@ public class SentinelAI : GameAI<SentinelModel>{
             ground.model);
     }
 
-    Goal<SentinelModel> Reach()
-    => new Goal<SentinelModel>(
+    Goal<SentinelModel> Reach() => (
         m => m.position == target,
         m => Vector2i.Distance(m.position, (Vector2i)target)
     );

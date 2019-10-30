@@ -10,6 +10,6 @@ public class SolverEditor : Editor {
         var stats = self.stats;
         LabelField($"Status: {stats?.status}");
         LabelField($"Iterations: {stats?.I}");
-        LabelField($"Fringe: {stats?.fxMaxNodes}");
+        LabelField($"Fringe: {stats?.peakFringeSize}");
     }
 }}

@@ -51,7 +51,7 @@ public class TestSentinel : TestBase{
         var s = p.Next(x, in g);
         var path = s.Path();
         o( path.Length, 6 );
-        print($"Iter: {p.I}, max fringe: {p.fxMaxNodes}");
+        print($"Iter: {p.I}, max fringe: {p.peakFringeSize}");
         print(p.status.ToString());
         foreach(var n in path) print(n.ToString());
     }
@@ -68,7 +68,7 @@ public class TestSentinel : TestBase{
         var s = p.Next(x, in g);
         var path = s.Path();
         o( path.Length, 6 );
-        print($"Iter: {p.I}, max fringe: {p.fxMaxNodes}");
+        print($"Iter: {p.I}, max fringe: {p.peakFringeSize}");
         print(p.status.ToString());
         foreach(var n in path) print(n.ToString());
     }
@@ -84,18 +84,16 @@ public class TestSentinel : TestBase{
         p.maxNodes = 100000;
         var g = Goal();
         var s = p.Next(x, in g);
-        print($"Iter: {p.I}, max fringe: {p.fxMaxNodes}");
+        print($"Iter: {p.I}, max fringe: {p.peakFringeSize}");
         var path = s.Path();
         o( path.Length, 6 );
         print(p.status.ToString());
         foreach(var n in path) print(n.ToString());
     }
 
-    Goal<SentinelModel> Goal()
-    => new Goal<SentinelModel>( m => m.target == null );
+    Goal<SentinelModel> Goal() => (m => m.target == null, null);
 
-    Goal<SentinelModel> HGoal()
-    => new Goal<SentinelModel>(
+    Goal<SentinelModel> HGoal() => (
         m => m.target == null,
         m => m.target?.Dist(m.x, m.y) ?? 0
     );

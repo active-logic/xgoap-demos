@@ -8,9 +8,9 @@ public class TestPerf : TestBase{
 
     [SetUp] public void Setup() => ground = new GroundModel();
 
-    [Test] public void Test_x_10(){
+    [Test] public void Test_x_100(){
         var z = 0;
-        for(int i=0;i<10;i++){
+        for(int i=0;i<100;i++){
         // -4, 2  Puts the sentinel top-right
         // -3, -2 Is on left side, faster
         var x =
@@ -26,7 +26,7 @@ public class TestPerf : TestBase{
         var s = p.Next(x, in g);
         //print(p.state.ToString());
         z += p.I;
-        //rint($"Iter: {p.I}, max fringe: {p.fxMaxNodes}");
+        //rint($"Iter: {p.I}, max fringe: {p.peakFringeSize}");
         //var path = s.Path();
         o( s.Path().Length, 33 );
         //foreach(var n in path) print(n.ToString());
@@ -35,13 +35,10 @@ public class TestPerf : TestBase{
         // speed increase is 25%; saved iterations 32%
     }
 
-    Goal<SentinelModel> Goal()
-    => new Goal<SentinelModel>( m => m.target == null );
+    Goal<SentinelModel> Goal() => ( m => m.target == null, null );
 
     Goal<SentinelModel> HGoal()
-    => new Goal<SentinelModel>(
-        m => m.target == null,
-        m => m.target?.Dist(m.x, m.y) ?? 0
-    );
+    => ( m => m.target == null,
+         m => m.target?.Dist(m.x, m.y) ?? 0 );
 
 }

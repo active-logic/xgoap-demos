@@ -12,7 +12,7 @@ public class SentinelModel : Agent, Clonable<SentinelModel>{
     GroundModel ground;
     int propIndex = -1;  // index of prop that can be pulled, or -1
 
-    Func<Cost>[] actions;
+    Option[] actions;
 
     public SentinelModel Allocate()
     => new SentinelModel();
@@ -46,12 +46,12 @@ public class SentinelModel : Agent, Clonable<SentinelModel>{
     }
 
     public SentinelModel(){
-        actions = new Func<Cost>[]
+        actions = new Option[]
         { MoveLeft, MoveBack, MoveRight, MoveForward, Shoot, Pull };
         ground = new GroundModel(4);
     }
 
-    public Func<Cost>[] Actions() => actions;
+    public Option[] Options() => actions;
 
     public Cost MoveLeft()    => Move(left);
     public Cost MoveRight()   => Move(right);

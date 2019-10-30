@@ -13,11 +13,11 @@ public readonly struct Vector2i{
     public Vector2i(float x, float y)
     { this.x = RoundToInt(x); this.y = RoundToInt(y); }
 
-    public static implicit operator Vector2i(ValueTuple<int, int> P)
-    => new Vector2i(P.Item1, P.Item2);
+    public static implicit operator Vector2i((int x, int y) P)
+    => new Vector2i(P.x, P.y);
 
-    public static implicit operator Vector2i(ValueTuple<float, float> P)
-    => new Vector2i(P.Item1, P.Item2);
+    public static implicit operator Vector2i((float x, float y) P)
+    => new Vector2i(P.x, P.y);
 
     public static explicit operator Vector2i(Vector2 v)
     => new Vector2i(RoundToInt(v.x), RoundToInt(v.y));
