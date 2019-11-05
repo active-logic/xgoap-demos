@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-//using UnityEngine;
+using UnityEngine;
 using Activ.GOAP;
 
 public class GroundModel : Clonable<GroundModel>{
@@ -112,6 +112,31 @@ public class GroundModel : Clonable<GroundModel>{
         for(int i = 0; i < props.Length; i++){
             c = c * 31 + props[i].GetHashCode();
         } return c;
+    }
+
+    // TODO should be possible to improve on this, but a little
+    // trickier
+    public int GetHashCode(Vector2i pos){
+        return 0;
+        /*
+        var c = 0;
+        for(int i = 0; i < props.Length; i++){
+            if(!props[i].IsNeighbor(pos)) continue;
+            c = c * 31 + props[i].GetHashCode();
+        } return c;
+        */
+    }
+
+    public bool IsEqual(GroundModel that, Vector2i pos){
+        for(int i = 0; i < props.Length; i++){
+            if(props[i].UnEq(that.props[i])){
+                var a = props[i].IsNeighbor(pos);
+                var b = that.props[i].IsNeighbor(pos);
+                if(a) return false;
+                if(b) return false;
+            }
+        }
+        return true;
     }
 
     // NOTE:

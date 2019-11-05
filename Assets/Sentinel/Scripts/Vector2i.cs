@@ -13,6 +13,8 @@ public readonly struct Vector2i{
     public Vector2i(float x, float y)
     { this.x = RoundToInt(x); this.y = RoundToInt(y); }
 
+    public float magnitudeSq => x*x + y*y;
+
     public static implicit operator Vector2i((int x, int y) P)
     => new Vector2i(P.x, P.y);
 
@@ -33,6 +35,16 @@ public readonly struct Vector2i{
 
     public static Vector2i operator - (Vector2i P, Vector2i Q)
     => new Vector2i(P.x - Q.x, P.y - Q.y);
+
+    public static Vector2i Abs(Vector2i P)
+    => new Vector2i(P.x < 0 ? - P.x : P.x,
+                    P.y < 0 ? - P.y : P.y);
+
+    public bool IsNeighbor(Vector2i that){
+        var u = Abs(this - that);
+        //return u.magnitudeSq <= 2;
+        return u.x + u.y <= 2;
+    }
 
     public static bool operator == (Vector2i self, object that){
         switch(that){

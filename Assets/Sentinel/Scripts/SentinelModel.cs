@@ -77,13 +77,13 @@ public class SentinelModel : Agent, Clonable<SentinelModel>{
         var that = (SentinelModel)other;
         return this.x == that.x
             && this.y == that.y
-            && this.ground.IsEqual(that.ground)
+            && this.ground.IsEqual(that.ground, new Vector2i(x, y))
             && this.propIndex == that.propIndex
             && this.target == that.target;
     }
 
     override public int GetHashCode()
-    => (((ground.GetHashCode()*31 + propIndex)*31) + x)*31 + y;
+    => (((ground.GetHashCode((x, y))*31 + propIndex)*31) + x)*31 + y;
 
     bool Move(Vector2i dir){
         var p = position + dir;

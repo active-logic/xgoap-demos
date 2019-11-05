@@ -27,7 +27,7 @@ public class TestPerf : TestBase{
             z += p.iteration;
             o( s.Path().Length, 33 );
         }
-        print($"Iter x: {z/10}"); // 1166 x 790
+        print($"Iter x: {z/100}"); // 1166 x 790
     }
 
     Goal<SentinelModel> Goal() => ( m => m.target == null, null );
