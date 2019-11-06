@@ -2,8 +2,9 @@ using System.Linq;
 using UnityEngine;
 using Activ.GOAP;
 using static UnityEngine.Vector3;
+using M = SentinelModel;
 
-public class SentinelAI : GameAI<SentinelModel>{
+public class SentinelAI : GameAI<M>{
 
     const float LARGE_VALUE = 1e6f;
     public Vector2 target;
@@ -32,21 +33,22 @@ public class SentinelAI : GameAI<SentinelModel>{
 
     override public bool IsActing() => actor.busy;
 
-    override public Goal<SentinelModel> Goal()
-    => ( m => m.target == null,
-         m => m.target?.Dist(m.x, m.y) ?? 0 );
+    override public Goal<M>[] Goals() => new Goal<M>[]{
+        ( m => m.target == null,
+          m => m.target?.Dist(m.x, m.y) ?? 0 )
+    };
 
-    override public SentinelModel Model(){
+    override public M Model(){
         var t = nearestTarget;
         if(t == null) return null;
         var p = t.transform.position;
-        return new SentinelModel(
+        return new M(
             transform,
-            new SentinelModel.Target(p.x, p.z),
+            new M.Target(p.x, p.z),
             ground.model);
     }
 
-    Goal<SentinelModel> Reach() => (
+    Goal<M> Reach() => (
         m => m.position == target,
         m => Vector2i.Distance(m.position, (Vector2i)target)
     );

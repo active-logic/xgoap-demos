@@ -339,8 +339,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5148c834ad2cd4c77aba6ca30c9c6d08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  model:
-    props: []
   propPrefab: {fileID: 2846331008999422305, guid: 8168ba99528814fab847e0d076545411,
     type: 3}
   props: []
@@ -522,17 +520,22 @@ PrefabInstance:
     - target: {fileID: 2698487362928202015, guid: 168d31e9f7eeb4b52baad82826968222,
         type: 3}
       propertyPath: policies.warnOnFail
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2698487362928202015, guid: 168d31e9f7eeb4b52baad82826968222,
         type: 3}
       propertyPath: policies.warnOnOverflow
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2698487362928202015, guid: 168d31e9f7eeb4b52baad82826968222,
         type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2698487362928202015, guid: 168d31e9f7eeb4b52baad82826968222,
+        type: 3}
+      propertyPath: config.safe
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 168d31e9f7eeb4b52baad82826968222, type: 3}
