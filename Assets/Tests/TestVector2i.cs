@@ -17,7 +17,14 @@ public class TestVector2i : TestBase{
 
     [Test] public void TestNeighbor2(){
         Vector2i a = (2, 3), b = (4, 3);
+        o( a.IsNeighbor(b) );
+        o( b.IsNeighbor(a) );
+    }
+
+    [Test] public void TestNeighbor3(){
+        Vector2i a = (2, 3), b = (4, 4);
         o( !a.IsNeighbor(b) );
         o( !b.IsNeighbor(a) );
     }
+
 }
