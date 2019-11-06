@@ -537,5 +537,10 @@ PrefabInstance:
       propertyPath: config.safe
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2698487362928202015, guid: 168d31e9f7eeb4b52baad82826968222,
+        type: 3}
+      propertyPath: cooldown
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 168d31e9f7eeb4b52baad82826968222, type: 3}
